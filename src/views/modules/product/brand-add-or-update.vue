@@ -3,7 +3,7 @@
     :title="!dataForm.brandId ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible">
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="140px">
     <el-form-item label="品牌名" prop="name">
       <el-input v-model="dataForm.name" placeholder="品牌名"></el-input>
     </el-form-item>
@@ -14,7 +14,7 @@
       <el-input v-model="dataForm.descript" placeholder="介绍"></el-input>
     </el-form-item>
     <el-form-item label="显示状态[0-不显示；1-显示]" prop="showStatus">
-      <el-input v-model="dataForm.showStatus" placeholder="显示状态[0-不显示；1-显示]"></el-input>
+      <el-input v-model="dataForm.showStatus" placeholder="显示状态[0-不显示；1-显示]" ></el-input>
     </el-form-item>
     <el-form-item label="检索首字母" prop="firstLetter">
       <el-input v-model="dataForm.firstLetter" placeholder="检索首字母"></el-input>
@@ -89,6 +89,10 @@
             })
           }
         })
+      },
+
+      updateBrandStatus(showStatus){
+        console.log("更新后的值为",showStatus)
       },
       // 表单提交
       dataFormSubmit () {

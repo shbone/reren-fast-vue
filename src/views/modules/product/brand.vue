@@ -40,7 +40,7 @@
         type="selection"
         header-align="center"
         align="center"
-        width="50"
+        width="80"
       >
       </el-table-column>
       <el-table-column
@@ -77,7 +77,7 @@
         align="center"
         label="显示状态[0-不显示；1-显示]"
       >
-      <!-- scope显示每行状态 -->
+        <!-- scope显示每行状态 -->
         <template slot-scope="scope">
           <!-- <i class="el-icon-time"></i>
           <span style="margin-left: 10px">{{ scope.row.date }}</span> -->
@@ -85,6 +85,9 @@
             v-model="scope.row.showStatus"
             active-color="#13ce66"
             inactive-color="#ff4949"
+            :active-value="1"
+            :inactive-value="0"
+            @change="updateBrandStatus(scope.row)"
           >
           </el-switch>
         </template>
@@ -189,6 +192,24 @@ export default {
           this.totalPage = 0;
         }
         this.dataListLoading = false;
+      });
+    },
+    updateBrandStatus(data) {
+      console.log("更新后的值为", data);
+      let { brandId, showStatus } = data;
+      this.$http({
+        url: this.$http.adornUrl("/product/brand/update"),
+        method: "post",
+        data: this.$http.adornData({
+          brandId: brandId,
+          showStatus: showStatus ? 1 : 0,
+        },false),
+      }).then(({ data }) => {
+        this.$message({
+          type: "success",
+          message: "成功发送",
+        });
+        // this.getDataList();
       });
     },
     // 每页数
