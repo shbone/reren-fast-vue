@@ -2,7 +2,7 @@
   <el-row :gutter="20">
     <el-col :span="6">
       菜单
-      <category></category>
+      <category @tree-node-click="treenodeclick"></category>
     </el-col>
     <el-col :span="18">
       <div class="mod-config">
@@ -136,6 +136,9 @@
 </template>
 
 <script>
+/**
+ *
+ */
 import category from "../common/category.vue";
 import AddOrUpdate from "./attrgroup-add-or-update.vue";
 export default {
@@ -143,6 +146,7 @@ export default {
   components: { category: category, AddOrUpdate: AddOrUpdate },
   data() {
     return {
+      catId: 0,
       dataForm: {
         key: "",
       },
@@ -160,11 +164,20 @@ export default {
     this.getDataList();
   },
   methods: {
+    // 感知到子节点的点击
+    treenodeclick(data, node, component) {
+      console.log("attrgroup感知到category组件被点击", data, node, component);
+      console.log("被点击的catID", data.catId);
+      if (node.level == 3) {
+        this.catId = data.catId;
+        this.getDataList();
+      }
+    },
     // 获取数据列表
     getDataList() {
       this.dataListLoading = true;
       this.$http({
-        url: this.$http.adornUrl("/product/attrgroup/list"),
+        url: this.$http.adornUrl(`/product/attrgroup/list/${this.catId}`),
         method: "get",
         params: this.$http.adornParams({
           page: this.pageIndex,
