@@ -9,7 +9,7 @@
       :rules="dataRule"
       ref="dataForm"
       @keyup.enter.native="dataFormSubmit()"
-      label-width="80px"
+      label-width="100px"
     >
       <el-form-item label="组名" prop="attrGroupName">
         <el-input
@@ -30,9 +30,9 @@
         <!-- <el-input v-model="dataForm.catelogId" placeholder="所属分类id"></el-input>
        -->
         <el-cascader
-          v-model="dataForm.catelogId"
+          v-model="dataForm.catelogIds"
           :options="categorys"
-          
+          :props="props"
         ></el-cascader>
       </el-form-item>
     </el-form>
@@ -47,9 +47,14 @@
 export default {
   data() {
     return {
+      props:{
+        value:"catId",
+        label:"name",
+        children:"children"
+      },
       visible: false,
       categorys:[
-
+        
       ],
       dataForm: {
         attrGroupId: 0,
@@ -57,7 +62,8 @@ export default {
         sort: "",
         descript: "",
         icon: "",
-        catelogId: "",
+        catelogId: 0,
+        catelogIds:[]
       },
       dataRule: {
         attrGroupName: [
@@ -104,6 +110,7 @@ export default {
               this.dataForm.descript = data.attrGroup.descript;
               this.dataForm.icon = data.attrGroup.icon;
               this.dataForm.catelogId = data.attrGroup.catelogId;
+
             }
           });
         }
@@ -126,7 +133,8 @@ export default {
               sort: this.dataForm.sort,
               descript: this.dataForm.descript,
               icon: this.dataForm.icon,
-              catelogId: this.dataForm.catelogId,
+              catelogId: this.dataForm.catelogIds[this.dataForm.catelogIds.length-1],
+             
             }),
           }).then(({ data }) => {
             if (data && data.code === 0) {
